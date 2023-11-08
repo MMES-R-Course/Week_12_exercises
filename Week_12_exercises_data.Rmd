@@ -1,0 +1,43 @@
+---
+title: "Week 12 exercises:Data"
+author: "J.Blondeau"
+date: "2023-11-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE}
+library(tidyverse)
+library(broom)
+library(kableExtra)
+
+drto_psu_density <- read_csv("data/drto_psu_denisty.csv")
+```
+
+
+This week we will work together on some 'slightly' advanced R concepts, then use these new concepts to perform significance tests for many different fish species by protection level.  We will then follow up any statistically significant tests with pairwise tests.
+
+This a typical analysis you might have already performed...think one-way ANOVA then Tukey pairwise tests, but we will use non-parametric equivalents.
+
+The main functions that will enable us to efficiently crunch all this data are...
+
+-[nest()](https://tidyr.tidyverse.org/reference/nest.html)
+<br>
+-[map()](https://purrr.tidyverse.org/reference/map.html)
+
+## Efficient Programming
+
+1. Examine the 'drto_psu_density.csv' dataset.  It consists of fish density at 605 samples across the Dry Tortugas for ~475 individual species.  The 'PROT' field is a categorical value representing 3 different management areas.
+
+```{r echo=FALSE}
+
+kable(head(drto_psu_density)) %>% 
+   kable_styling(bootstrap_options = "striped")
+```
+
+2. We are going to first run a Kruskal Wallace test to look for significant differences at the management zone level for each species.  Then filter out all non-significant results.
+
+3. Next we will run Wilcox pairwise tests for all the significant fish species to test which management zone(s) where statistically different for each species.  Then again filter out any non-significant results. 
